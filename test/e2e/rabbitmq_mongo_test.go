@@ -40,7 +40,7 @@ func TestKonsumeWithRabbitMQMongo(t *testing.T) {
 				},
 				Queues: []*config.QueueConfig{
 					{
-						Name:     testQueueName + "-1",
+						Name:     "test-mongo-1",
 						Provider: "rabbit-queue",
 						DatabaseRoutes: []*config.DatabaseRouteConfig{
 							{
@@ -58,7 +58,7 @@ func TestKonsumeWithRabbitMQMongo(t *testing.T) {
 				},
 			},
 			SetupMessage: SetupMessage{
-				QueueName: testQueueName + "-1",
+				QueueName: "test-mongo-1",
 				Message:   []byte("{\"car_brand\": \"test\", \"car_model\": \"test\", \"car_year\": 2021}"),
 			},
 			ExpectedQuery: DBQueryExpectation{

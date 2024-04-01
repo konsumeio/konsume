@@ -1,0 +1,86 @@
+name: "e2e-tests"
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  run-tests:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+    services:
+      zookeeper:
+        image: confluentinc/cp-zookeeper:latest
+        ports:
+          - 2181:2181
+        env:
+          ALLOW_ANONYMOUS_LOGIN: "yes"
+          ZOOKEEPER_CLIENT_PORT: 2181
+          ZOOKEEPER_TICK_TIME: 2000
+      rabbitmq:
+        image: rabbitmq:3-management
+        ports:
+          - 5672:5672
+          - 15672:15672
+        options: >-
+          --health-cmd "rabbitmqctl status"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          RABBITMQ_DEFAULT_USER: user
+          RABBITMQ_DEFAULT_PASS: password
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: mysecretpassword
+          POSTGRES_DB: mynewdatabase
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+      kafka:
+        image: confluentinc/cp-kafka:latest
+        ports:
+          - "29092:29092"
+          - "9092:9092"
+        env:
+          KAFKA_BROKER_ID: 1
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://kafka:29092,PLAINTEXT_EXTERNAL://kafka:9092
+          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_EXTERNAL:PLAINTEXT
+          KAFKA_LISTENERS: PLAINTEXT_INTERNAL://0.0.0.0:29092,PLAINTEXT_EXTERNAL://0.0.0.0:9092
+          KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+          ALLOW_PLAINTEXT_LISTENER: "yes"
+        options: >-
+          --health-cmd "kafka-topics.sh --bootstrap-server kafka:29092 --list"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21.5'
+
+      - name: Build main application
+        run: |
+          go build -v -o konsume ./cmd/...
+          go build -v -o konsume main.go
+
+      - name: Build plugins
+        run: |
+          go build -v -buildmode=plugin -o plugins/postgres-linux.so ./plugin/postgresql/postgresql.go
+          go build -v -buildmode=plugin -o plugins/mongodb-linux.so ./plugin/mongodb/mongodb.go
+
+      - name: Run E2E tests
+        run: |
+          go test -v ./test/e2e/...

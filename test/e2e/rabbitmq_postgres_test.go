@@ -39,7 +39,7 @@ func TestKonsumeWithRabbitMQPostgres(t *testing.T) {
 				},
 				Queues: []*config.QueueConfig{
 					{
-						Name:     testQueueName + "-1",
+						Name:     "test-postgres-1",
 						Provider: "rabbit-queue",
 						DatabaseRoutes: []*config.DatabaseRouteConfig{
 							{
@@ -57,7 +57,7 @@ func TestKonsumeWithRabbitMQPostgres(t *testing.T) {
 				},
 			},
 			SetupMessage: SetupMessage{
-				QueueName: testQueueName + "-1",
+				QueueName: "test-postgres-1",
 				Message:   []byte("{\"car_brand\": \"test\", \"car_model\": \"test\", \"car_year\": 2021}"),
 			},
 			ExpectedQuery: DBQueryExpectation{

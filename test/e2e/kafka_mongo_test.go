@@ -20,7 +20,7 @@ func TestKonsumeWithKafkaMongo(t *testing.T) {
 						Name: "kafka-queue",
 						Type: "kafka",
 						KafkaConfig: &config.KafkaConfig{
-							Topic: "kafka-1",
+							Topic: "kafka-mongo-1",
 							Brokers: []string{
 								"127.0.0.1:29092",
 							},
@@ -38,7 +38,7 @@ func TestKonsumeWithKafkaMongo(t *testing.T) {
 				},
 				Queues: []*config.QueueConfig{
 					{
-						Name:     testQueueName + "-1",
+						Name:     "kafka-queue-1",
 						Provider: "kafka-queue",
 						DatabaseRoutes: []*config.DatabaseRouteConfig{
 							{
@@ -56,7 +56,7 @@ func TestKonsumeWithKafkaMongo(t *testing.T) {
 				},
 			},
 			SetupMessage: SetupMessage{
-				QueueName: testQueueName + "-1",
+				QueueName: "kafka-queue-1",
 				Message:   []byte("{\"car_brand\": \"test\", \"car_model\": \"test\", \"car_year\": 2021}"),
 			},
 			ExpectedQuery: DBQueryExpectation{

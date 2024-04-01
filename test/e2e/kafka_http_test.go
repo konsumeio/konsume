@@ -24,17 +24,17 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 						Name: "kafka-queue",
 						Type: "kafka",
 						KafkaConfig: &config.KafkaConfig{
-							Topic: "kafka-1",
+							Topic: "kafka-http-1",
 							Brokers: []string{
 								"127.0.0.1:29092",
 							},
-							Group: "test-group",
+							Group: "test-group-1",
 						},
 					},
 				},
 				Queues: []*config.QueueConfig{
 					{
-						Name:     "kafka-1",
+						Name:     "kafka-queue-1",
 						Provider: "kafka-queue",
 						Routes: []*config.RouteConfig{
 							{
@@ -46,7 +46,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 				},
 			},
 			SetupMessage: SetupMessage{
-				QueueName: "kafka-1",
+				QueueName: "kafka-queue-1",
 				Message:   []byte("{\"id\": 0, \"name\": \"test\"}"),
 			},
 			ExpectedResult: []HTTPRequestExpectation{
@@ -65,7 +65,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 						Name: "kafka-queue",
 						Type: "kafka",
 						KafkaConfig: &config.KafkaConfig{
-							Topic: "kafka-2",
+							Topic: "kafka-http-2",
 							Brokers: []string{
 								"127.0.0.1:29092",
 							},
@@ -75,7 +75,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 				},
 				Queues: []*config.QueueConfig{
 					{
-						Name:     "kafka-2",
+						Name:     "kafka-queue-2",
 						Provider: "kafka-queue",
 						Routes: []*config.RouteConfig{
 							{
@@ -91,7 +91,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 				},
 			},
 			SetupMessage: SetupMessage{
-				QueueName: "kafka-2",
+				QueueName: "kafka-queue-2",
 				Message:   []byte("{\"id\": 1, \"name\": \"test\"}"),
 			},
 			ExpectedResult: []HTTPRequestExpectation{
@@ -110,7 +110,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 						Name: "kafka-queue",
 						Type: "kafka",
 						KafkaConfig: &config.KafkaConfig{
-							Topic: "kafka-3",
+							Topic: "kafka-http-3",
 							Brokers: []string{
 								"127.0.0.1:29092",
 							},
@@ -120,7 +120,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 				},
 				Queues: []*config.QueueConfig{
 					{
-						Name:     "kafka-3",
+						Name:     "kafka-queue-3",
 						Provider: "kafka-queue",
 						Retry: &config.RetryConfig{
 							Enabled:         true,
@@ -139,7 +139,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 				},
 			},
 			SetupMessage: SetupMessage{
-				QueueName: "kafka-3",
+				QueueName: "kafka-queue-3",
 				Message:   []byte("{\"id\": 1, \"name\": \"test\"}"),
 			},
 			ExpectedResult: []HTTPRequestExpectation{
@@ -168,7 +168,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 						Name: "kafka-queue",
 						Type: "kafka",
 						KafkaConfig: &config.KafkaConfig{
-							Topic: "kafka-4",
+							Topic: "kafka-http-4",
 							Brokers: []string{
 								"127.0.0.1:29092",
 							},
@@ -178,7 +178,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 				},
 				Queues: []*config.QueueConfig{
 					{
-						Name:     "kafka-4",
+						Name:     "kafka-queue-4",
 						Provider: "kafka-queue",
 						Retry: &config.RetryConfig{
 							Enabled:         true,
@@ -197,7 +197,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 				},
 			},
 			SetupMessage: SetupMessage{
-				QueueName: "kafka-4",
+				QueueName: "kafka-queue-4",
 				Message:   []byte("{\"id\": 1, \"name\": \"test\"}"),
 			},
 			ExpectedResult: []HTTPRequestExpectation{
@@ -226,7 +226,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 						Name: "kafka-queue",
 						Type: "kafka",
 						KafkaConfig: &config.KafkaConfig{
-							Topic: "kafka-5",
+							Topic: "kafka-http-5",
 							Brokers: []string{
 								"127.0.0.1:29092",
 							},
@@ -236,7 +236,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 				},
 				Queues: []*config.QueueConfig{
 					{
-						Name:     "kafka-5",
+						Name:     "kafka-queue-5",
 						Provider: "kafka-queue",
 						Retry: &config.RetryConfig{
 							Enabled:         true,
@@ -255,7 +255,7 @@ func TestKonsumeWithKafkaHTTP(t *testing.T) {
 				},
 			},
 			SetupMessage: SetupMessage{
-				QueueName: "kafka-5",
+				QueueName: "kafka-queue-5",
 				Message:   []byte("{\"id\": 1, \"name\": \"test\"}"),
 			},
 			ExpectedResult: []HTTPRequestExpectation{
