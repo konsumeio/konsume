@@ -27,6 +27,6 @@ jobs:
         run: go test ./pkg/... -race -coverprofile=coverage.txt -covermode=atomic
 
       - name: Codecov
-        uses: codecov/codecov-action@v5.1.2
+        uses: codecov/codecov-action@v5.3.0
         with:
           files: ./coverage.txt
